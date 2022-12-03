@@ -1,6 +1,6 @@
 ﻿## Gerenciar imagens
 
-Aprenda a gerenciar as imagens de gatos dentro do sistema da TheCatAPI.
+Aprenda a gerenciar as imagens de gatos dentro do sistema da The Cat API.
 
 ### Visão geral
 
