@@ -6,7 +6,7 @@ Aprenda a gerenciar as imagens de gatos dentro do sistema da The Cat API.
 
 Com o recurso Images é possível criar, obter e excluir imagens de gatos no nosso sistema. 
 
-Para realizar as chamadas, a sua API key deve ser informada no header, na variável `x-api-key`. O `path` utilizado nas chamadas é https://api.thecatapi.com/v1.
+Para realizar as chamadas, é obrigatório ter uma API Key. Para obtê-la, registre-se em https://thecatapi.com/signup e receba a API Key por e-mail. A sua API Key deve ser informada no header, na variável `x-api-key`. O `path` utilizado nas chamadas é https://api.thecatapi.com/v1.
 
 ---
 
