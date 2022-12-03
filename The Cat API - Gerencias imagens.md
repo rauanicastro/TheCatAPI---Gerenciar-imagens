@@ -22,6 +22,7 @@ Para criar uma nova imagem de gato no sistema, chame `POST /images/upload` e pre
 
 A resposta do código  `201 Created` indica que a criação da imagem foi executada com sucesso, e retorna um JSON com as informações da imagem, incluindo seu novo `ID` . O `ID` é gerado automaticamente pelo sistema. Por exemplo:
 
+
        {
         "id": "6Y8Bdvw1A",
         "url": "https://cdn2.thecatapi.com/images/6Y8Bdvw1A.jpg",
