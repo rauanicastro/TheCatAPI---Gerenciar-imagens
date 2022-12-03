@@ -1,0 +1,243 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TheCatAPI</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h2 id="gerenciar-imagens">Gerenciar imagens</h2>
+<p>Aprenda a gerenciar as imagens de gatos dentro do sistema da TheCatAPI.</p>
+<h3 id="visão-geral">Visão geral</h3>
+<p>Com o recurso Images é possível criar, obter e excluir imagens de gatos no nosso sistema. É obrigatório que o arquivo de imagem seja .gif, .jpg, ou .png válido. Imagens que sejam inapropriadas ou que não contiverem gatos serão recusadas.</p>
+<p>Para realizar as chamadas, a sua API key deve ser informada no header, na variável <code>x-api-key</code>. O <code>path</code> utilizado nas chamadas é <a href="https://api.thecatapi.com/v1">https://api.thecatapi.com/v1</a>.</p>
+<hr>
+<h3 id="criar-imagem">Criar imagem</h3>
+<p>Para criar uma nova imagem de gato no sistema, chame <code>POST /images/upload</code>. Preencha o corpo da requisição com um <code>file</code> contendo o arquivo. Por exemplo:</p>
+<pre><code>curl --location --request POST 'https://api.thecatapi.com/v1/images/upload' \
+--header 'x-api-key: live_2du7MqgVFkeexQfcCL0Vn738CK9AnmW1Ye20vPbZ35WFKv507Y3NAGQYnt7hIbOB' \
+--form 'file=@"81Oj_pa-N/gato-preto-1666974144631_v2_3x4.jpg"'
+</code></pre>
+<p>A resposta do código  <code>201 Created</code> indica que a criação da imagem foi executada com sucesso, e retorna um JSON com as informações da imagem, incluindo seu novo <code>ID</code> . O <code>ID</code> é gerado automaticamente pelo sistema. Por exemplo:</p>
+<pre><code>   {
+    "id": "6Y8Bdvw1A",
+    "url": "https://cdn2.thecatapi.com/images/6Y8Bdvw1A.jpg",
+    "width": 1059,
+    "height": 1413,
+    "original_filename": "gato-preto-1666974144631_v2_3x4.jpg",
+    "pending": 0,
+    "approved": 1
+}
+</code></pre>
+<blockquote>
+<p>Observação: se já houver um <code>ID</code> da imagem para identificação interna, preencha o corpo da requisição com <code>sub_id</code> do tipo <code>string</code>.</p>
+</blockquote>
+<h3 id="obter-imagem">Obter imagem</h3>
+<p>Há mais de uma forma para obter as imagens que foram enviadas através do <code>/images/upload</code>. São elas:</p>
+<ol>
+<li>Get by ID</li>
+<li>GET</li>
+</ol>
+<h4 id="get-by-id">1. GET by ID</h4>
+<p>Para obter uma imagem específica, chame <code>GET /images/{image_id}</code> como <code>path</code>. O parâmetro <code>image_id</code> deve ser composto apenas do <code>ID</code> da imagem que você deseja obter. Por exemplo:</p>
+<pre><code>curl --location --request GET 'https://api.thecatapi.com/v1/images/6Y8Bdvw1A' \
+--header 'x-api-key: live_2du7MqgVFkeexQfcCL0Vn738CK9AnmW1Ye20vPbZ35WFKv507Y3NAGQYnt7hIbOB'
+</code></pre>
+<p>A resposta do código <code>200 OK</code> indica que a imagem foi obtida com sucesso, e retorna um JSON com as informações da imagem encontrada. Por exemplo:</p>
+<pre><code>"id":  "6Y8Bdvw1A",
+
+"url":  "https://cdn2.thecatapi.com/images/6Y8Bdvw1A.jpg",
+
+"width":  1059,
+
+"height":  1413,
+
+"sub_id":  null
+
+}
+</code></pre>
+<h4 id="get">2. GET</h4>
+<p>Outra opção para obter as imagens é chamar <code>GET /images</code> como <code>path</code> para poder filtrar os resultados através dos seguintes parâmetros <code>query</code>:</p>
+<ul>
+<li><code>limit</code></li>
+</ul>
+<p>O parâmetro <code>limit</code> é do tipo <code>integer</code> e funciona para delimitar o número de resultados a serem retornados. O padrão do parâmetro <code>limit</code> é 1, portanto, para obter mais imagens, insira o valor desejado. Por exemplo:</p>
+<pre><code>curl --location --request GET 'https://api.thecatapi.com/v1/images?limit=2' \
+--header 'x-api-key: live_2du7MqgVFkeexQfcCL0Vn738CK9AnmW1Ye20vPbZ35WFKv507Y3NAGQYnt7hIbOB'
+</code></pre>
+<p>A resposta do código <code>200 OK</code> indica que as imagens foram obtidas com sucesso, e retorna um JSON com as informações das imagens encontradas. Por exemplo:</p>
+<pre><code>[
+    {
+        "breeds": [],
+        "id": "6Y8Bdvw1A",
+        "url": "https://cdn2.thecatapi.com/images/6Y8Bdvw1A.jpg",
+        "width": 1059,
+        "height": 1413,
+        "sub_id": null,
+        "created_at": "2022-12-01T00:13:48.000Z",
+        "original_filename": "gato-preto-1666974144631_v2_3x4.jpg",
+        "breed_ids": null
+    },
+    {
+        "breeds": [],
+        "id": "gsa7n-0Ek",
+        "url": "https://cdn2.thecatapi.com/images/gsa7n-0Ek.jpg",
+        "width": 700,
+        "height": 466,
+        "sub_id": null,
+        "created_at": "2022-12-01T00:11:13.000Z",
+        "original_filename": "25516126.jpg",
+        "breed_ids": null
+    }
+]
+</code></pre>
+<ul>
+<li><code>mime_types</code></li>
+</ul>
+<p>Esse parâmetro é do tipo <code>string</code> delimitado por vírgulas e filtra as imagens como  <strong>.gif</strong>, <strong>.jpg</strong>, ou <strong>.png</strong>. O <code>mime_types</code> retorna todos esses três tipos de imagem como padrão. Abaixo, um exemplo de chamada para obter três imagens filtradas por .png e .jpg:</p>
+<pre><code> curl --location --request GET 'https://api.thecatapi.com/v1/images?limit=3&amp;order=png,jpg' \
+--header 'x-api-key: live_2du7MqgVFkeexQfcCL0Vn738CK9AnmW1Ye20vPbZ35WFKv507Y3NAGQYnt7hIbOB'
+</code></pre>
+<p>A resposta do código <code>200 OK</code> indica que as imagens foram obtidas com sucesso, e retorna um JSON com as informações das imagens encontradas. Por exemplo:</p>
+<pre><code>    [
+    {
+        "breeds": [],
+        "id": "bezC2JyB3",
+        "url": "https://cdn2.thecatapi.com/images/bezC2JyB3.jpg",
+        "width": 700,
+        "height": 466,
+        "sub_id": null,
+        "created_at": "2022-12-01T00:09:38.000Z",
+        "original_filename": "25516126.jpg",
+        "breed_ids": null
+    },
+    {
+        "breeds": [],
+        "id": "S1NMmWujv",
+        "url": "https://cdn2.thecatapi.com/images/S1NMmWujv.jpg",
+        "width": 360,
+        "height": 360,
+        "sub_id": null,
+        "created_at": "2022-12-01T15:12:54.000Z",
+        "original_filename": "cat_01.jpg",
+        "breed_ids": null
+    },
+    {
+        "breeds": [],
+        "id": "vEPpiDG_p",
+        "url": "https://cdn2.thecatapi.com/images/vEPpiDG_p.png",
+        "width": 360,
+        "height": 636,
+        "sub_id": null,
+        "created_at": "2022-12-02T13:07:30.000Z",
+        "original_filename": "png-transparent-himalayan-cat-thai-cat-siamese-cat-balinese-cat-birman-ragdoll-cat-mammal-animals-ca",
+        "breed_ids": null
+    }
+]
+</code></pre>
+<ul>
+<li><code>order</code></li>
+</ul>
+<p>O parâmetro <code>order</code> é do tipo <code>string</code> e permite que as imagens sejam obtidas de forma ordenada usando <strong>RANDOM</strong>, <strong>ASC</strong> ou <strong>DESC</strong>. O padrão é <strong>RANDOM</strong>. Por exemplo:</p>
+<pre><code>curl --location --request GET 'https://api.thecatapi.com/v1/images?limit=2&amp;order' \
+--header 'x-api-key: live_2du7MqgVFkeexQfcCL0Vn738CK9AnmW1Ye20vPbZ35WFKv507Y3NAGQYnt7hIbOB'
+</code></pre>
+<p>A resposta do código <code>200 OK</code> indica que as imagens foram obtidas com sucesso em ordem aleatória, e retorna um JSON com as informações das imagens encontradas. Por exemplo:</p>
+<pre><code>[
+    {
+        "breeds": [],
+        "id": "x94CCTLLe",
+        "url": "https://cdn2.thecatapi.com/images/x94CCTLLe.jpg",
+        "width": 360,
+        "height": 360,
+        "sub_id": null,
+        "created_at": "2022-12-01T00:28:09.000Z",
+        "original_filename": "cat_01.jpg",
+        "breed_ids": null
+    },
+    {
+        "breeds": [],
+        "id": "gsa7n-0Ek",
+        "url": "https://cdn2.thecatapi.com/images/gsa7n-0Ek.jpg",
+        "width": 700,
+        "height": 466,
+        "sub_id": null,
+        "created_at": "2022-12-01T00:11:13.000Z",
+        "original_filename": "25516126.jpg",
+        "breed_ids": null
+    }
+]
+</code></pre>
+<p>Para filtrar as imagens em ordem ascendente de tamanho, use <strong>ASC</strong> no parâmetro <code>order</code>. Por exemplo:</p>
+<pre><code>curl --location --request GET 'https://api.thecatapi.com/v1/images?limit=2&amp;order=ASC' \
+--header 'x-api-key: live_2du7MqgVFkeexQfcCL0Vn738CK9AnmW1Ye20vPbZ35WFKv507Y3NAGQYnt7hIbOB'
+</code></pre>
+<p>A resposta do código <code>200 OK</code> indica que as imagens foram obtidas com sucesso em ordem ascendente, e retorna um JSON com as informações das imagens encontradas. Por exemplo:</p>
+<pre><code>[
+    {
+        "breeds": [],
+        "id": "V1EFdLiCO",
+        "url": "https://cdn2.thecatapi.com/images/V1EFdLiCO.png",
+        "width": 860,
+        "height": 733,
+        "sub_id": null,
+        "created_at": "2022-11-24T15:28:59.000Z",
+        "original_filename": "41-415477_cat-tongue-png-cute-cat-png-transparent-png.png",
+        "breed_ids": null
+    },
+    {
+        "breeds": [],
+        "id": "uDA8Z17di",
+        "url": "https://cdn2.thecatapi.com/images/uDA8Z17di.jpg",
+        "width": 275,
+        "height": 183,
+        "sub_id": null,
+        "created_at": "2022-11-24T16:35:58.000Z",
+        "original_filename": "index.jpg",
+        "breed_ids": null
+    }
+]
+</code></pre>
+<p>Para filtrar as imagens em ordem descendente de tamanho, use <strong>DESC</strong> no parâmetro <code>order</code>. Por exemplo:</p>
+<pre><code>  curl --location --request GET 'https://api.thecatapi.com/v1/images?limit=2&amp;order=DESC' \
+--header 'x-api-key: live_2du7MqgVFkeexQfcCL0Vn738CK9AnmW1Ye20vPbZ35WFKv507Y3NAGQYnt7hIbOB'
+</code></pre>
+<p>A resposta do código <code>200 OK</code> indica que as imagens foram obtidas com sucesso em ordem descendente, e retorna um JSON com as informações das imagens encontradas. Por exemplo:</p>
+<pre><code>   [
+    {
+        "breeds": [],
+        "id": "x94CCTLLe",
+        "url": "https://cdn2.thecatapi.com/images/x94CCTLLe.jpg",
+        "width": 360,
+        "height": 360,
+        "sub_id": null,
+        "created_at": "2022-12-01T00:28:09.000Z",
+        "original_filename": "cat_01.jpg",
+        "breed_ids": null
+    },
+    {
+        "breeds": [],
+        "id": "gsa7n-0Ek",
+        "url": "https://cdn2.thecatapi.com/images/gsa7n-0Ek.jpg",
+        "width": 700,
+        "height": 466,
+        "sub_id": null,
+        "created_at": "2022-12-01T00:11:13.000Z",
+        "original_filename": "25516126.jpg",
+        "breed_ids": null
+    }
+]
+</code></pre>
+<h3 id="deletar-imagem">Deletar imagem</h3>
+<p>Para excluir uma imagem, chame <code>DELETE /images/{image_id}</code> passado como parâmetro <code>path</code>. O parâmetro <code>image_id</code> deve ser composto apenas do <code>ID</code> da imagem que você deseja excluir. Por exemplo:</p>
+<pre><code>curl --location --request DELETE 'https://api.thecatapi.com/v1/images/6Y8Bdvw1A' \
+--header 'x-api-key: live_2du7MqgVFkeexQfcCL0Vn738CK9AnmW1Ye20vPbZ35WFKv507Y3NAGQYnt7hIbOB'
+</code></pre>
+<p>A resposta de código <code>204 No Content</code> indica que a imagem foi excluída com sucesso e o sistema não retorna um JSON nesse caso.</p>
+</div>
+</body>
+
+</html>
