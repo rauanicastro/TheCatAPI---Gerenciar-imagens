@@ -13,14 +13,15 @@ Para realizar as chamadas, é obrigatório ter uma API Key. Para obtê-la, regis
 ###  Criar imagem
 
 
-Para criar uma nova imagem de gato no sistema, chame `POST /images/upload` e preencha o corpo da requisição com um `file` contendo o arquivo. Imagens que sejam inapropriadas ou que não contiverem gatos serão recusadas, e é obrigatório que o arquivo de imagem seja .gif, .jpg, ou .png válido. Por exemplo:
+Para criar uma nova imagem de gato no sistema, chame `POST /images/upload` e preencha o corpo da requisição com um `file` contendo o arquivo. Imagens que sejam inapropriadas ou que não contiverem gatos serão recusadas, e é obrigatório que o arquivo de imagem seja .gif, .jpg, ou .png válido.
 
+>Observação: se já houver um `id` da imagem para identificação interna, preencha o corpo da requisição com `sub_id` do tipo `string`.
  
     curl --location --request POST 'https://api.thecatapi.com/v1/images/upload' \
     --header 'x-api-key: live_2du7MqgVFkeexQfcCL0Vn738CK9AnmW1Ye20vPbZ35WFKv507Y3NAGQYnt7hIbOB' \
     --form 'file=@"81Oj_pa-N/gato-preto-1666974144631_v2_3x4.jpg"'
 
-A resposta do código  `201 Created` indica que a criação da imagem foi executada com sucesso, e retorna um JSON com as informações da imagem, incluindo seu novo `ID` . O `ID` é gerado automaticamente pelo sistema. Por exemplo:
+A resposta do código  `201 Created` indica que a criação da imagem foi executada com sucesso, e retorna um JSON com as informações da imagem, incluindo seu novo `id` . O `id` é gerado automaticamente pelo sistema. Por exemplo:
 
 
        {
@@ -34,11 +35,6 @@ A resposta do código  `201 Created` indica que a criação da imagem foi execut
     }
 
 
-
-
->Observação: se já houver um `ID` da imagem para identificação interna, preencha o corpo da requisição com `sub_id` do tipo `string`.
-
-
 ### Obter imagem
 
 Há mais de uma forma para obter as imagens que foram enviadas através do `/images/upload`. São elas:
@@ -47,7 +43,7 @@ Há mais de uma forma para obter as imagens que foram enviadas através do `/ima
 
 #### 1. GET by ID
 
-Para obter uma imagem específica, chame `GET /images/{image_id}` como `path`. O parâmetro `image_id` deve ser composto apenas do `ID` da imagem que você deseja obter. Por exemplo:
+Para obter uma imagem específica, chame `GET /images/{image_id}` como `path`. O parâmetro `image_id` deve ser composto apenas do `id` da imagem que você deseja obter. Por exemplo:
 
     curl --location --request GET 'https://api.thecatapi.com/v1/images/6Y8Bdvw1A' \
     --header 'x-api-key: live_2du7MqgVFkeexQfcCL0Vn738CK9AnmW1Ye20vPbZ35WFKv507Y3NAGQYnt7hIbOB'
@@ -254,7 +250,7 @@ A resposta do código `200 OK` indica que as imagens foram obtidas com sucesso e
 
 ### Deletar imagem
 
-Para excluir uma imagem, chame `DELETE /images/{image_id}` passado como parâmetro `path`. O parâmetro `image_id` deve ser composto apenas do `ID` da imagem que você deseja excluir. Por exemplo:
+Para excluir uma imagem, chame `DELETE /images/{image_id}` passado como parâmetro `path`. O parâmetro `image_id` deve ser composto apenas do `id` da imagem que você deseja excluir. Por exemplo:
 
     curl --location --request DELETE 'https://api.thecatapi.com/v1/images/6Y8Bdvw1A' \
     --header 'x-api-key: live_2du7MqgVFkeexQfcCL0Vn738CK9AnmW1Ye20vPbZ35WFKv507Y3NAGQYnt7hIbOB'
